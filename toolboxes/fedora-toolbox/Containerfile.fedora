@@ -40,8 +40,7 @@ RUN dnf install -y \
 
 # Install neovim
 RUN dnf install -y \
-    neovim \
-
+    neovim
 
 # Cleanup
 RUN rm -rf /tmp/*
