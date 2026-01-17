@@ -9,6 +9,5 @@ libxml2-devel
 make
 ruby-devel
 vagrant
-vagrant-libvirt
 wget
 zlib-devel
