@@ -1,0 +1,14 @@
+byacc
+cmake
+gcc
+gcc-c++
+libguestfs-tools
+libvirt
+libvirt-devel
+libxml2-devel
+make
+ruby-devel
+vagrant
+vagrant-libvirt
+wget
+zlib-devel
