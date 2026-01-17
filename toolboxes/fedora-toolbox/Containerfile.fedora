@@ -37,5 +37,14 @@ RUN dnf install -y \
     dnf swap -y mesa-vdpau-drivers mesa-vdpau-drivers-freeworld && \
     dnf clean all
 
+# Comment out. Install vagrant over @vagrant package collection in packages.fedora
+## Add the HashiCorp Repo & install vagrant, vagrant-libvirt and all dependencies
+#COPY ./toolboxes/fedora-toolbox/packages-vagrant.fedora /tmp/toolbox-packages-vagrant
+#RUN wget -O- https://rpm.releases.hashicorp.com/fedora/hashicorp.repo | sudo tee /etc/yum.repos.d/hashicorp.repo && \
+#    dnf -y install $(<tmp/toolbox-packages-vagrant) && \
+#    vagrant plugin install vagrant-libvirt && \
+#    dnf -y upgrade && \
+#    dnf clean all
+
 # Cleanup
 RUN rm -rf /tmp/*
