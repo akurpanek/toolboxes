@@ -42,7 +42,7 @@ jobs:
       # Build image using Docker (more stable in GitHub Actions)
       - name: Build Image
         id: build_image
-        uses: docker/build-push-action@0565240e2d4ab84f7acb476da1caa193e24629e8 # v5
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./toolboxes/ollama-toolbox-intel/Containerfile.ollama-intel
