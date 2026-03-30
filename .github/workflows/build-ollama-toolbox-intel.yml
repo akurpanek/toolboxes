@@ -39,17 +39,18 @@ jobs:
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/akurpanek/toolboxes/main/README.md
 
-      # Build image using Buildah action
+      # Build image using Docker (more stable in GitHub Actions)
       - name: Build Image
         id: build_image
-        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
+        uses: docker/build-push-action@0565240e2d4ab84f7acb476da1caa193e24629e8 # v5
         with:
-          containerfiles: |
-            ./toolboxes/ollama-toolbox-intel/Containerfile.ollama-intel
-          image: ${{ env.IMAGE_NAME }}
-          tags: ${{ env.IMAGE_TAGS }}
-          labels: ${{ steps.meta.outputs.labels }}
-          oci: false
+          context: .
+          file: ./toolboxes/ollama-toolbox-intel/Containerfile.ollama-intel
+          push: false
+          tags: ${{ env.IMAGE_NAME }}:latest
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       - name: Lowercase Registry
@@ -67,8 +68,8 @@ jobs:
           REGISTRY_USER: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}
         with:
-          image: ${{ steps.build_image.outputs.image }}
-          tags: ${{ steps.build_image.outputs.tags }}
+          image: ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_TAGS }}
           registry: ${{ steps.registry_case.outputs.lowercase }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
