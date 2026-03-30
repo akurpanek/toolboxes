@@ -35,7 +35,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/akurpanek/toolboxes/main/README.md
 
@@ -43,7 +43,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build image using Docker Buildx (with cache disabled for now)
+      # Build image using Docker Buildx
       - name: Build Image
         id: build_image
         uses: docker/build-push-action@v5
@@ -51,7 +51,7 @@ jobs:
           context: .
           file: ./toolboxes/ollama-toolbox-intel/Containerfile.ollama-intel
           push: false
-          tags: ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           load: true
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
@@ -71,7 +71,7 @@ jobs:
           REGISTRY_PASSWORD: ${{ github.token }}
         with:
           image: ${{ env.IMAGE_NAME }}:latest
-          tags: ${{ env.IMAGE_TAGS }}
+          tags: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           registry: ${{ steps.registry_case.outputs.lowercase }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
