@@ -7,13 +7,19 @@ RUN dnf install -y \
     podman-compose \
     git \
     intel-opencl \
-    level-zero-devel \
     clinfo \
     && dnf clean all
 
-# Install additional tools for Intel GPU
+# Install Intel GPU runtime and Level Zero manually
 RUN dnf install -y \
-    intel-gpu-tools \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-gmmlib_23.2.0_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-igc-core_1.0.14909.1_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-igc-opencl_1.0.14909.1_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-opencl_23.41.27596.14_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-ocloc_23.41.27596.14_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/libigc_1.0.14909.1_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/level-zero_1.13.0_x86_64.rpm \
+    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/level-zero-devel_1.13.0_x86_64.rpm \
     && dnf clean all
 
 # Set up user and permissions for /dev/dri
