@@ -1,0 +1,7 @@
+podman
+podman-compose
+git
+intel-opencl
+level-zero-devel
+clinfo
+intel-gpu-tools
