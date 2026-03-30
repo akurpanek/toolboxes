@@ -1,14 +1,15 @@
 # Containerfile for OLLAMA with Intel ARC GPU support
-FROM fedora:latest
+FROM fedora:43
 
-# Install only the most critical packages
+# Install only the most critical packages and clean up
 RUN dnf install -y \
     podman \
     podman-compose \
     git \
     intel-opencl \
     clinfo \
-    && dnf clean all
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 # Set up user and permissions for /dev/dri
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 root
