@@ -1,0 +1,38 @@
+# Use Fedora as base
+FROM ghcr.io/akurpanek/toolboxes/fedora-toolbox:latest
+
+# Install required packages for OLLAMA, Open WebUI, and Intel GPU support
+RUN dnf install -y \
+    podman \
+    git \
+    curl \
+    wget \
+    tar \
+    gzip \
+    make \
+    cmake \
+    gcc-c++ \
+    libstdc++-devel \
+    intel-opencl \
+    intel-level-zero-gpu \
+    level-zero \
+    level-zero-devel \
+    && dnf clean all
+
+# Install OLLAMA
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
+# Install Open WebUI (standalone, no Docker/Podman required)
+RUN mkdir -p /opt/open-webui && \
+    cd /opt/open-webui && \
+    git clone https://github.com/open-webui/open-webui.git . && \
+    pip install -r requirements.txt
+
+# Configure environment for Intel GPU
+ENV OLLAMA_ORIGINS="*"\n    OLLAMA_HOST="0.0.0.0"\n    OLLAMA_KEEP_ALIVE="24h"\n    OLLAMA_MAX_LOADED_MODELS=2\n    OLLAMA_NUM_PARALLEL=1\n    SYCL_CACHE_PERSISTENT=1\n    SYCL_CACHE_DIR=/var/cache/sycl\n    ONEAPI_DEVICE_SELECTOR=level_zero:gpu
+
+# Expose ports
+EXPOSE 11434 8080
+
+# Entrypoint to start OLLAMA and Open WebUI
+ENTRYPOINT ["sh", "-c", "ollama serve & open-webui serve --port 8080"]
