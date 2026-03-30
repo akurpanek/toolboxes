@@ -10,17 +10,10 @@ RUN dnf install -y \
     clinfo \
     && dnf clean all
 
-# Install Intel GPU runtime and Level Zero manually
-RUN dnf install -y \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-gmmlib_23.2.0_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-igc-core_1.0.14909.1_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-igc-opencl_1.0.14909.1_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-opencl_23.41.27596.14_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/intel-ocloc_23.41.27596.14_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/libigc_1.0.14909.1_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/level-zero_1.13.0_x86_64.rpm \
-    https://github.com/intel/compute-runtime/releases/download/23.41.27596.14/level-zero-devel_1.13.0_x86_64.rpm \
-    && dnf clean all
+# Add Intel GPU repository and install packages
+RUN dnf install -y https://repositories.intel.com/graphics/intel-graphics.repo && \
+    dnf install -y level-zero-devel intel-opencl intel-gpu-tools && \
+    dnf clean all
 
 # Set up user and permissions for /dev/dri
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 root
